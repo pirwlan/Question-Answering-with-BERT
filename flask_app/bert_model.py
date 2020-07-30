@@ -1,9 +1,8 @@
-from transformers import AutoTokenizer, TFAutoModelForQuestionAnswering
+from transformers import TFAutoModelForQuestionAnswering
 
 import os
 import requests
-import tensorflow as tf
-import utils
+from flask_app import utils
 
 
 def download_bert():

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from transformers import AutoTokenizer, TFAutoModelForQuestionAnswering
+from transformers import TFAutoModelForQuestionAnswering
 
 import data_processing as dp
 
