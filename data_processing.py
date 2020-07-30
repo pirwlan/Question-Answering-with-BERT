@@ -46,16 +46,65 @@ def data_preprocessing(context, question):
     return x_data, tokenizer.convert_ids_to_tokens(input_ids)
 
 
+def construct_answer(tokens):
+    """
+    Combine tokens into a string, remove some hash symbols, and leading/trailing whitespace.
+
+    Args:
+        tokens: list -  a list of tokens
+
+    Returns:
+        out_string: string - the processed string.
+    """
+
+    for idx, curr_token in enumerate(tokens):
+        if idx == 0:
+            out_string = curr_token
+
+        elif idx > 0:
+
+            if curr_token[0] == '#':
+
+                curr_token = curr_token.replace("##", "")
+
+            else:
+                curr_token = " " + curr_token
+
+            out_string += curr_token
+
+    out_string = out_string.strip()
+
+    return out_string
+
+
 def get_answer(decoded_ids, answer_start, answer_stop):
     """
 
     Args:
         decoded_ids: list - list of decoded tokens
-        answer_start: int - start position of mostlikely start position
-        answer_stop: int - stop position of most likely stop position
+        answer_start: list - list of all likelyhood for start for each position
+        answer_stop: list - list of all likelyhood for stop each position
 
     Returns:
         answer: string - most likely answer
     """
-    answer = decoded_ids[np.argmax(answer_start):np.argmax(answer_stop)][0]
+
+    start_pos_best = -1
+    stop_pos_best = -1
+
+    sum_max = -np.inf
+
+    for curr_start_pos in range(len(answer_start)):
+
+        for curr_stop_pos in range(curr_start_pos, len(answer_stop)):
+
+            if answer_start[curr_start_pos] + answer_stop[curr_stop_pos] > sum_max:
+                sum_max = answer_start[curr_start_pos] + answer_stop[curr_stop_pos]#
+
+                start_pos_best = curr_start_pos
+
+                stop_pos_best = curr_stop_pos
+
+    answer = construct_answer(decoded_ids[start_pos_best:stop_pos_best + 1])
+
     return answer

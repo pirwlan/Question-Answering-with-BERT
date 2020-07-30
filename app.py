@@ -21,7 +21,7 @@ def predict():
 
     start_pos, stop_pos = bert_model.predict(bert_input)
 
-    answer = dp.get_answer(decoded_ids, start_pos, stop_pos)
+    answer = dp.get_answer(decoded_ids, start_pos[0], stop_pos[0])
 
     return render_template('index.html', pred=f'What a tough question...\n is it {answer}?')
 
