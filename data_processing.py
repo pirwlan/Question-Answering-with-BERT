@@ -1,3 +1,8 @@
+from transformers import AutoTokenizer
+
+import numpy as np
+
+
 def make_input_type_ids(input_ids, tokenizer):
     """
     Makes mask to separate question and context
@@ -19,21 +24,38 @@ def make_input_type_ids(input_ids, tokenizer):
     return segment_ids
 
 
-def data_preprocessing(context, question, tokenizer):
+def data_preprocessing(context, question):
     """
     Prepares input to Bert input format
 
     Args:
         context: str - Context where the answer is "hidden"
         question: str - Posed Question
-        tokenizer: Bert.Tokenizer
 
     Returns:
         x_data: list - [input_ids, input_type_ids]
     """
+
+    tokenizer = AutoTokenizer.from_pretrained('distilbert-base-cased-distilled-squad')
+
     input_ids = tokenizer.encode(question, context)
     input_type_ids = make_input_type_ids(input_ids, tokenizer)
 
     x_data = [input_ids, input_type_ids]
 
-    return x_data, input_ids
+    return x_data, tokenizer.convert_ids_to_tokens(input_ids)
+
+
+def get_answer(decoded_ids, answer_start, answer_stop):
+    """
+
+    Args:
+        decoded_ids: list - list of decoded tokens
+        answer_start: int - start position of mostlikely start position
+        answer_stop: int - stop position of most likely stop position
+
+    Returns:
+        answer: string - most likely answer
+    """
+    answer = decoded_ids[np.argmax(answer_start):np.argmax(answer_stop)][0]
+    return answer

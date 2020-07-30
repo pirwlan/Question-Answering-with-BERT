@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block head%}
+
+{% endblock %}
+
+{% block body %}
+<div><center>
+    <p style="margin-bottom:2cm;"></p>
+    <h1>The allmighty Bert is here, </h1>
+    <h1> to answer all of your questions</h1>
+    <p style="margin-bottom:2cm;"></p>
+    <form action="/predict" method="POST">
+        <div>
+            <p>What do you want to know?</p>
+            <input type="text" name = "question" id="question">
+        </div>
+        <p style="margin-bottom:1cm;"></p>
+        <div>
+            <p>Where shall I look for an answer?</p>
+            <input type="text" name = "context" id="context">
+        </div>
+        <p style="margin-bottom:1cm;"></p>
+        <input type="submit" value="Predict">
+    </form>
+    <p style="margin-bottom:1cm;"></p>
+    <h2>{{pred}}</h2>
+</center>
+</div>
+{% endblock %}
