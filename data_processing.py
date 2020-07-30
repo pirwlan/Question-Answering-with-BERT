@@ -1,57 +1,39 @@
-from transformers import AutoTokenizer
-
-import os
-
-
-def tokenize(sentence):
+def make_input_type_ids(input_ids, tokenizer):
     """
-    Uses dist-bert tokeniezr to tokenize imput
-    Args:
-        sentence: string - input sequence
+    Makes mask to separate question and context
 
     Returns:
-        tokenized input
+        input_type_ids: list - 0 for question token, 1 for context token
     """
-    tokenizer = AutoTokenizer.from_pretrained('distilbert-base-cased-distilled-squad')
-    return tokenizer.encode(sentence)
+
+    # Search the input_ids for the first instance of the `[SEP]` token.
+    sep_index = input_ids.index(tokenizer.sep_token_id)
+    question_index = sep_index + 1
+
+    context_index = len(input_ids) - question_index
+
+    segment_ids = [0] * question_index + [1] * context_index
+
+    assert len(segment_ids) == len(input_ids)
+
+    return segment_ids
 
 
-def make_input_ids(context, question):
+def data_preprocessing(context, question, tokenizer):
     """
+    Prepares input to Bert input format
 
     Args:
-        context:
-        question:
+        context: str - Context where the answer is "hidden"
+        question: str - Posed Question
+        tokenizer: Bert.Tokenizer
 
     Returns:
-        input_ids:
+        x_data: list - [input_ids, input_type_ids]
     """
-    input_ids = context + question[1:]
-    QA_type = [0] * len(context) + \
-                     [1] * len(question[1:])
+    input_ids = tokenizer.encode(question, context)
+    input_type_ids = make_input_type_ids(input_ids, tokenizer)
 
-    return input_ids, QA_type
+    x_data = [input_ids, input_type_ids]
 
-
-def padding(input_ids, QA_type, attention_mask):
-
-    padding_length = int(os.getenv('MAX_LENGTH')) - len(input_ids)
-
-    for element in [input_ids, QA_type, attention_mask]:
-        element += ([0] * padding_length)
-
-    return input_ids, QA_type, attention_mask
-
-
-def data_preprocessing(context, question):
-    context = tokenize(context)
-    question = tokenize(question)
-
-    input_ids, QA_type = make_input_ids(context, question)
-
-    attention_mask = [1] * len(input_ids)
-
-    input_ids, QA_type, attention_mask = padding(input_ids, QA_type, attention_mask)
-
-    return input_ids, QA_type, attention_mask
-
+    return x_data, input_ids
