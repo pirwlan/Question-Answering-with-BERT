@@ -28,6 +28,6 @@ def predict():
 
 if __name__ == '__main__':
 
-    bert_model = TFAutoModelForQuestionAnswering.from_pretrained('distilbert-base-cased-distilled-squad')
-
+    #bert_model = TFAutoModelForQuestionAnswering.from_pretrained('distilbert-base-cased-distilled-squad')
+    bert_model = TFAutoModelForQuestionAnswering.from_pretrained('./model/')
     app.run(host='0.0.0.0', port=8000, debug=True)

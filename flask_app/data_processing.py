@@ -36,7 +36,7 @@ def data_preprocessing(context, question):
         x_data: list - [input_ids, input_type_ids]
     """
 
-    tokenizer = AutoTokenizer.from_pretrained('distilbert-base-cased-distilled-squad')
+    tokenizer = AutoTokenizer.from_pretrained('./model')
 
     input_ids = tokenizer.encode(question, context)
     input_type_ids = make_input_type_ids(input_ids, tokenizer)
