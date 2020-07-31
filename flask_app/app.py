@@ -3,6 +3,7 @@ from tensorflow import keras
 from transformers import TFAutoModelForQuestionAnswering
 
 import data_processing as dp
+import os
 import tensorflow as tf
 
 app = Flask(__name__)
@@ -30,5 +31,9 @@ def predict():
 
 if __name__ == '__main__':
 
-    bert_model = TFAutoModelForQuestionAnswering.from_pretrained('./model')
+    if os.path.exists('./model/tf_model.h5'):
+        bert_model = TFAutoModelForQuestionAnswering.from_pretrained('./model')
+    else:
+        bert_model = TFAutoModelForQuestionAnswering.from_pretrained('distilbert-base-cased-distilled-squad')
+
     app.run(host='0.0.0.0', port=8000, debug=True)
