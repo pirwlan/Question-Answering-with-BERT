@@ -6,7 +6,7 @@ I used distilBERT, particularly a model provided by [Hugging Face](https://huggi
 
 
 
-![webapp](example/app.png 'webapp')
+![webapp](img/img.png 'webapp')
 
 
 
