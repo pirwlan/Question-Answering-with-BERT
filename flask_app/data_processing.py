@@ -1,6 +1,7 @@
 from transformers import AutoTokenizer
 
 import numpy as np
+import os
 
 
 def make_input_type_ids(input_ids, tokenizer):
@@ -36,7 +37,7 @@ def data_preprocessing(context, question):
         x_data: list - [input_ids, input_type_ids]
     """
 
-    tokenizer = AutoTokenizer.from_pretrained('./model')
+    tokenizer = AutoTokenizer.from_pretrained('distilbert-base-cased-distilled-squad')
 
     input_ids = tokenizer.encode(question, context)
     input_type_ids = make_input_type_ids(input_ids, tokenizer)
