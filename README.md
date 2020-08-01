@@ -1,4 +1,4 @@
-# Bert answers all your questions!
+# BERT is here, to answer all your questions!
 
 NLP is one of the hottest areas in ML/DL, particularly transformers, a kind of network architecture that has revolutionized the field. Here I used distilBERT, I variant of the Bert model. which is lighter and faster than Bert. Even though the model size has been reduced by 40%, the performance was only reduced by 3% [1](https://arxiv.org/abs/1910.01108). The small size makes distilBERT perfect for edge devices. 
 
