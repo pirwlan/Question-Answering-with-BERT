@@ -1,5 +1,5 @@
 ../.idea/
-model/
+flask_app/model/
 /model/distilbert-base-cased-distilled-squad-tf_model.h5
 __pycache__
 .idea/
